@@ -1,0 +1,3 @@
+Modulo di dichiarazione di residenza (contenuto di prova)
+
+Cognome, nome, data di nascita, nuovo indirizzo, firma.

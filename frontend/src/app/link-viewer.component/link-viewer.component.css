@@ -1,0 +1,305 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.viewer {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  background: var(--c-panel);
+  color: var(--c-text);
+  border: 2px solid var(--c-panel-line);
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* PDF badge, title with "Modulo ufficiale · 4 pagine", "Stampa" and "Chiudi", on white. */
+.viewer-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 14px 18px 14px 22px;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-panel-line);
+}
+
+.pdf-badge {
+  flex: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #cd212a;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.viewer-heading {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.viewer-title {
+  margin: 0;
+  color: var(--c-text-strong);
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer-meta {
+  margin: 2px 0 0;
+  color: var(--c-muted);
+  font-size: 0.95rem;
+}
+
+.viewer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: none;
+  min-height: 56px;
+  padding: 0 22px;
+  border: 2px solid var(--c-primary);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.viewer-print {
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+}
+
+.viewer-print:hover:not(:disabled) {
+  background: var(--c-primary-hover);
+}
+
+.viewer-print:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.viewer-close {
+  background: var(--c-surface);
+  color: var(--c-primary);
+}
+
+.viewer-close:hover {
+  background: color-mix(in srgb, var(--c-primary) 10%, var(--c-surface));
+}
+
+.viewer-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.viewer-frame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+
+/* PDF: one page at a time, white on the light blue of the panel; a long page scrolls. */
+.viewer-pdf {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  touch-action: pan-y;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  scrollbar-width: thin;
+}
+
+.pdf-page {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* "Pagina 2 di 4" between two arrows of 60 px; in Arabic they point the other way. */
+.pdf-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--c-panel-line);
+  background: var(--c-panel-foot);
+}
+
+.pdf-arrow {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--c-primary);
+  background: var(--c-surface);
+  color: var(--c-primary);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.pdf-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+[dir="rtl"] .pdf-arrow i {
+  transform: scaleX(-1);
+}
+
+.pdf-count {
+  min-width: 9em;
+  color: var(--c-text-strong);
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.viewer-wait {
+  margin: auto;
+  color: var(--c-muted);
+  font-size: 1.1rem;
+}
+
+.viewer-copy {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-note {
+  margin: 0;
+  padding: 12px 24px;
+  background: var(--c-accent-soft);
+  color: var(--c-text);
+  font-size: 0.95rem;
+}
+
+.viewer-text {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 24px 24px;
+  line-height: 1.6;
+  scrollbar-width: thin;
+}
+
+.viewer-text h3 {
+  margin: 20px 0 8px;
+  color: var(--c-text-strong);
+  font-size: 1.15rem;
+}
+
+.viewer-text p {
+  margin: 0 0 10px;
+}
+
+.viewer-text .li {
+  position: relative;
+  padding-inline-start: 22px;
+}
+
+.viewer-text .li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 6px;
+  top: 0.65em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-primary);
+}
+
+.viewer-qr {
+  display: grid;
+  place-items: center;
+}
+
+.viewer-qr img {
+  display: block;
+  width: 240px;
+  height: 240px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.viewer-qr--small {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-top: var(--border-w) solid var(--c-line);
+  background: var(--c-surface-alt);
+}
+
+.viewer-qr--small img {
+  width: 96px;
+  height: 96px;
+  padding: 4px;
+}
+
+.viewer-qr--small p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.viewer-blocked {
+  margin: auto;
+  max-width: 460px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.viewer-blocked p {
+  margin: 0;
+}
+
+.viewer-icon {
+  font-size: 2.5rem;
+  color: var(--c-primary);
+}
+
+.viewer-msg {
+  color: var(--c-text-strong);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.viewer-url {
+  max-width: 100%;
+  color: var(--c-muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}

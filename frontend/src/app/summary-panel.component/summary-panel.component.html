@@ -1,0 +1,88 @@
+<section class="summary" [attr.dir]="state.dir()" [attr.lang]="state.selectedLanguage() ?? 'it'" aria-labelledby="summary-title">
+  <header class="head">
+    <h2 id="summary-title">{{ state.t('summaryTitle') }}</h2>
+    @if (topics.sections().length) {
+      <p>{{ topics.sections().length === 1 ? state.t('summaryOneTopic') : state.t('summaryTopics', { n: topics.sections().length }) }}</p>
+    }
+  </header>
+
+  <div class="body">
+    @if (!topics.sections().length) {
+      <!-- Before the first answer about a subject: how the kiosk works, and that nothing is kept. -->
+      <h3 class="how-title">{{ state.t('howTitle') }}</h3>
+      <ol class="how">
+        @for (step of ['howStep1', 'howStep2', 'howStep3']; track step; let n = $index) {
+          <li><span class="step" aria-hidden="true">{{ n + 1 }}</span><span>{{ state.t(step) }}</span></li>
+        }
+      </ol>
+      <p class="privacy"><i class="fa-solid fa-lock" aria-hidden="true"></i><span>{{ state.t('privacyNote') }}</span></p>
+    } @else {
+      @for (section of topics.sections(); track section.topic) {
+        @if (section.topic === topics.open()) {
+          <article class="topic open" [attr.aria-labelledby]="'summary-' + section.topic">
+            <h3 [id]="'summary-' + section.topic">
+              <i class="fa-solid {{ icon(section.topic) }}" aria-hidden="true"></i>
+              <span>{{ topics.title(section.topic) }}</span>
+              @if (section.topic === topics.current()) {
+                <span class="badge">{{ state.t('summaryInProgress') }}</span>
+              }
+            </h3>
+            @if (section.bring.length) {
+              <h4>{{ state.t('summaryBring') }}</h4>
+              <ul class="bring">
+                @for (item of section.bring; track item) {
+                  <li><i class="fa-solid fa-check" aria-hidden="true"></i><span>{{ item }}</span></li>
+                }
+              </ul>
+            }
+            @if (section.forms.length) {
+              <h4>{{ state.t('formsLabel') }}</h4>
+              <ul class="forms">
+                @for (form of section.forms; track form.id) {
+                  <li>
+                    <button type="button" class="form" (click)="viewer.open({ url: form.url, title: form.title, kind: 'modulo' })">
+                      <span class="pdf" aria-hidden="true">PDF</span>
+                      <span class="form-title">{{ form.title }}</span>
+                      <span class="open-label">{{ state.t('summaryOpen') }}</span>
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+            @if (section.sources.length) {
+              <h4>{{ state.t('sourcesLabel') }}</h4>
+              <ol class="sources">
+                @for (source of section.sources; track $index) {
+                  <li>
+                    @if (source.url) {
+                      <button type="button" class="source" (click)="viewer.open({ url: source.url, title: source.title, copy: source.copy, kind: source.kind })">
+                        <span class="num">{{ $index + 1 }}</span><span class="source-title">{{ source.title }}</span>
+                      </button>
+                    } @else {
+                      <span class="source"><span class="num">{{ $index + 1 }}</span><span class="source-title">{{ source.title }}</span></span>
+                    }
+                  </li>
+                }
+              </ol>
+            }
+          </article>
+        } @else {
+          <button type="button" class="topic closed" (click)="topics.view(section.topic)">
+            <i class="fa-solid {{ icon(section.topic) }}" aria-hidden="true"></i>
+            <span class="closed-title">{{ topics.title(section.topic) }}</span>
+            @if (counts(section); as counts) {
+              <span class="counts">{{ counts }}</span>
+            }
+          </button>
+        }
+      }
+    }
+  </div>
+
+  <footer class="foot">
+    <button type="button" class="print" (click)="print()" [disabled]="!printer.conversationPrintable() || printer.busy()">
+      <i class="fa-solid fa-print" aria-hidden="true"></i>
+      <span>{{ state.t('summaryPrint') }}</span>
+    </button>
+  </footer>
+</section>

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "cie",
+    "title": "Carta d'identità elettronica (documento di prova)",
+    "kind": "pagina",
+    "topic": "cie",
+    "file": "cie.md",
+    "url": "https://example.org/cie",
+    "forms": ["delega"]
+  },
+  {
+    "id": "residenza",
+    "title": "Cambio di residenza (documento di prova)",
+    "kind": "pagina",
+    "topic": "residenza",
+    "file": "residenza.md",
+    "forms": ["modulo-residenza"]
+  },
+  {
+    "id": "modulo-residenza",
+    "title": "Modulo di dichiarazione di residenza (documento di prova)",
+    "kind": "modulo",
+    "topic": "residenza",
+    "file": "modulo-residenza.txt"
+  },
+  {
+    "id": "delega",
+    "title": "Modulo di delega (documento di prova)",
+    "kind": "modulo",
+    "topic": "cie",
+    "file": "delega.txt"
+  }
+]

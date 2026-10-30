@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+/* The question and two cards side by side, in the middle of what the top row leaves. Sizes follow
+   the height of the window (dvh), so that the cards fit at 1536 x 864 and with large text. */
+.choice-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 5dvh, 56px);
+  padding: clamp(8px, 2dvh, 24px) 40px clamp(16px, 6dvh, 64px);
+}
+
+.choice-title {
+  margin: 0;
+  color: var(--c-on-dark);
+  font-size: min(3.625rem, 7.4dvh);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  animation: rise 0.85s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+
+.choice-cards {
+  display: flex;
+  justify-content: center;
+  gap: clamp(32px, 6.25vw, 120px);
+  width: 100%;
+}
+
+/* All of the card is the button; "Inizia" and "Cerca" only show what it does. */
+.choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(8px, 1.6dvh, 16px);
+  box-sizing: border-box;
+  width: min(560px, 45vw);
+  padding: clamp(20px, 3.5dvh, 38px) 40px;
+  border: 2px solid var(--c-panel-line);
+  border-radius: 28px;
+  background: var(--c-panel);
+  color: var(--c-text-strong);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.75);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+  animation: rise 0.85s 0.1s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+
+.choice-card + .choice-card {
+  animation-delay: 0.18s;
+}
+
+.choice-card:hover {
+  border-color: var(--c-primary);
+}
+
+.choice-card:active {
+  transform: scale(0.99);
+}
+
+.art {
+  display: grid;
+  place-items: center;
+  width: clamp(110px, 17.4dvh, 188px);
+  height: clamp(110px, 17.4dvh, 188px);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c-primary) 16%, var(--c-surface));
+  color: var(--c-primary);
+}
+
+.art svg {
+  width: 64%;
+  height: 64%;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: min(2.125rem, 4.6dvh);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.card-desc {
+  color: var(--c-muted);
+  font-size: min(1.3125rem, 3dvh);
+  line-height: 1.4;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  min-height: 56px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+[dir="rtl"] .pill i {
+  transform: scaleX(-1);
+}

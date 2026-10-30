@@ -1,0 +1,90 @@
+:host {
+  display: block;
+}
+
+.welcome {
+  cursor: pointer;
+}
+
+/* Logo, subtitle, key and greetings in the middle of what the top row leaves. The heights follow
+   the window (dvh), so that it fits at 1536 x 864 too. */
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3.4dvh, 36px);
+  padding: 0 40px clamp(24px, 8dvh, 86px);
+  text-align: center;
+}
+
+/* The white logo straight on the dark background. */
+.logo {
+  display: block;
+  width: min(760px, 80vw);
+  height: auto;
+  animation: rise 0.85s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--c-on-dark-muted);
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  animation: rise 0.85s 0.05s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+
+/* A pill with a light glow that pulses: it says what to do, but the whole screen starts. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 88px;
+  padding: 12px 44px;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c-primary) 85%, #ffffff), var(--c-primary));
+  color: var(--c-on-primary);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: 0 0 40px -6px color-mix(in srgb, var(--c-primary) 70%, transparent), 0 16px 30px -16px rgba(0, 0, 0, 0.7);
+  animation: rise 0.85s 0.1s cubic-bezier(0.2, 0.75, 0.2, 1) both, glow 2.6s 1s ease-in-out infinite;
+}
+
+.cta i {
+  font-size: 0.9em;
+}
+
+:root[data-cvd="contrast"] .cta {
+  border-color: #ffffff;
+  background: var(--c-primary);
+  box-shadow: none;
+}
+
+.hellos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+  margin: 0;
+  color: var(--c-on-dark-muted);
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 40px -6px color-mix(in srgb, var(--c-primary) 70%, transparent), 0 16px 30px -16px rgba(0, 0, 0, 0.7); }
+  50% { box-shadow: 0 0 64px 0 color-mix(in srgb, var(--c-primary) 85%, transparent), 0 16px 30px -16px rgba(0, 0, 0, 0.7); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta { animation: none; }
+}

@@ -1,0 +1,37 @@
+<div class="page" [attr.dir]="state.dir()" [attr.lang]="state.selectedLanguage() ?? 'it'">
+  <app-top-controls [languageCurrent]="true" (back)="back()" />
+
+  <div class="lang-main">
+    <h1 id="lang-title" class="lang-title">{{ state.t('chooseLang') }}</h1>
+    <!-- The same words in the other languages, each in its own script: fixed, not translated. -->
+    <p class="lang-others">
+      @for (other of others(); track other.code) {
+        <span [attr.lang]="other.code" [attr.dir]="dirOf(other.code)">{{ other.text }}</span>
+      }
+    </p>
+
+    <div class="lang-grid" role="radiogroup" aria-labelledby="lang-title">
+      @for (lang of languages; track lang.code) {
+        <button class="language-card"
+                [class.selected]="isSelected(lang.code)"
+                (click)="selectLanguage(lang)"
+                type="button"
+                role="radio"
+                [attr.lang]="lang.code"
+                [attr.dir]="dirOf(lang.code)"
+                [attr.aria-checked]="isSelected(lang.code)">
+          <span class="radio" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
+          <span class="native-name">{{ lang.nativeName }}</span>
+          @if (lang.translatedName) {
+            <span class="translated-name" lang="it">{{ lang.translatedName }}</span>
+          }
+          @if (isSelected(lang.code)) {
+            <span class="selected-label">{{ state.t('langSelected') }}</span>
+          }
+        </button>
+      }
+    </div>
+
+    <p class="lang-hint">{{ state.t('langHint') }}</p>
+  </div>
+</div>

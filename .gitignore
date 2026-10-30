@@ -1,0 +1,36 @@
+# Repository-wide ignore rules.
+# Project-specific rules live in frontend/.gitignore and backend/.gitignore.
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Angular output when ng runs from the root by mistake (it belongs in frontend/)
+/.angular/
+/dist/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Instructions for Claude Code: kept on this computer, not in the repository
+CLAUDE.md

@@ -1,0 +1,93 @@
+<div class="page" [class.kb-open]="keyboardOpen()" [class.with-viewer]="!!viewer.link()" [class.rtl]="state.isRtl()" [attr.dir]="state.dir()" [attr.lang]="state.selectedLanguage()">
+  <app-top-controls [endable]="true" (back)="goBack()" (language)="goToLanguageSelection()" />
+
+  <div class="chat-layout">
+    <!-- The conversation, with the on-screen keyboard right under it. -->
+    <div class="chat-col">
+      <section class="chatbot-container" aria-labelledby="chat-title">
+        <header class="chat-header">
+          <span class="assistant-avatar" aria-hidden="true"><img src="logo-tramite-icona.png" alt="" /></span>
+          <div class="assistant-name">
+            <h1 id="chat-title">{{ state.t('assistantTitle') }}</h1>
+            <p>{{ state.t('assistantSub') }}</p>
+          </div>
+          <!-- One chip per subject of the conversation: a touch goes back to where it started. -->
+          <app-topic-chips />
+          <!-- Only without the summary beside the chat (narrow windows): its key prints the same. -->
+          @if (printer.conversationPrintable() && !viewer.link()) {
+            <button type="button" class="print-conv" (click)="printConversation()" [disabled]="printer.busy() || waiting()">
+              <i class="fa-solid fa-print" aria-hidden="true"></i>
+              <span>{{ state.t('printConversation') }}</span>
+            </button>
+          }
+        </header>
+
+        <div class="chat-messages" #messagesBox role="log" aria-live="polite">
+          <p class="privacy-note"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{ state.t('privacyNote') }}</p>
+          @if (!hasQuestions()) {
+            <app-chat-start (pick)="askAbout($event)" />
+          }
+          @for (msg of state.chatMessages(); track $index; let last = $last, i = $index) {
+            <!-- The answer to this question opens a subject: "Argomento: …", "Nuovo argomento: …". -->
+            @if (marks().get(i); as mark) {
+              <app-topic-divider [attr.data-topic-start]="mark.topic" [class.viewed]="mark.topic === topics.viewed()"
+                                 [label]="topicLabel(mark.topic, mark.first)" [icon]="topicIcon(mark.topic)" />
+            }
+            <app-chat-message [message]="msg"
+                              [reading]="msg.sender === 'bot' && !!msg.text && !msg.pending && !(last && waiting()) && speech.canRead(state.selectedLanguage())" />
+          }
+          <!-- While an earlier subject is shown: back to the end of the conversation. -->
+          @if (topics.viewed()) {
+            <button type="button" class="back-to-last" (click)="backToLast()">
+              <span>{{ state.t('backToLast') }}</span>
+              <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+            </button>
+          }
+        </div>
+
+        <form class="composer" (ngSubmit)="sendMessage()">
+          <label for="chat-input" class="sr-only">{{ state.t('inputPlaceholder') }}</label>
+          <input #chatInput id="chat-input" type="text" name="message" autocomplete="off" spellcheck="false" inputmode="none"
+                 [(ngModel)]="newMessage" [placeholder]="placeholder()"
+                 (focus)="keyboardOpen.set(true)" (click)="keyboardOpen.set(true)" />
+          @if (speech.canDictate) {
+            <!-- "Parla": the words spoken are written in the field; red while listening. -->
+            <button type="button" class="key speak-key" [class.on]="speech.listening()" [class.busy]="speech.transcribing()" (click)="toggleDictation()"
+                    [disabled]="waiting() || speech.transcribing()" [attr.aria-pressed]="speech.listening()"
+                    [attr.aria-label]="speech.listening() ? state.t('dictateStop') : null">
+              @if (speech.transcribing()) {
+                <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+                <span role="status">{{ state.t('transcribing') }}</span>
+              } @else {
+                <i class="fa-solid fa-microphone" aria-hidden="true"></i>
+                <span>{{ speech.listening() ? state.t('listeningShort') : state.t('speak') }}</span>
+              }
+            </button>
+          }
+          <button type="submit" class="key send-key" [disabled]="waiting() || !newMessage().trim()">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            <span>{{ state.t('send') }}</span>
+          </button>
+        </form>
+      </section>
+
+      @if (keyboardOpen()) {
+        <app-virtual-keyboard
+          [docked]="true"
+          [lang]="state.selectedLanguage()"
+          [target]="chatInput"
+          [hideLabel]="state.t('kbHide')"
+          [enterLabel]="state.t('send')"
+          [(value)]="newMessage"
+          (enter)="sendMessage()"
+          (close)="closeKeyboard()" />
+      }
+    </div>
+
+    @if (viewer.link()) {
+      <app-link-viewer class="chat-viewer" />
+    } @else {
+      <app-summary-panel />
+    }
+  </div>
+</div>

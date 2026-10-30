@@ -1,0 +1,104 @@
+@if (viewer.link(); as link) {
+  <section class="viewer" role="region" [attr.aria-label]="link.title" [attr.dir]="state.dir()" [attr.lang]="state.selectedLanguage()">
+    <!-- Title and keys always in view: the pages scroll below them. -->
+    <header class="viewer-head">
+      @if (status() === 'pdf') {
+        <span class="pdf-badge" aria-hidden="true">PDF</span>
+      }
+      <div class="viewer-heading">
+        <h2 class="viewer-title">{{ link.title }}</h2>
+        @if (status() === 'pdf') {
+          <p class="viewer-meta">{{ state.t(link.kind === 'modulo' ? 'viewerForm' : 'viewerDoc') }} · {{ pagesLabel() }}</p>
+        }
+      </div>
+      @if (status() === 'pdf') {
+        <button type="button" class="viewer-btn viewer-print" (click)="print()" [disabled]="printer.busy()">
+          @if (printer.busy()) {
+            <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+            <span role="status">{{ state.t('viewerPrinting') }}</span>
+          } @else {
+            <i class="fa-solid fa-print" aria-hidden="true"></i>
+            <span>{{ state.t('viewerPrint') }}</span>
+          }
+        </button>
+      }
+      <button type="button" class="viewer-btn viewer-close" (click)="viewer.close()">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        <span>{{ state.t('viewerClose') }}</span>
+      </button>
+    </header>
+
+    <div class="viewer-body">
+      @switch (status()) {
+        @case ('loading') {
+          <p class="viewer-wait" role="status"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> {{ state.t('viewerLoading') }}</p>
+        }
+        @case ('pdf') {
+          <!-- One page at a time, as wide as the viewer; a long page scrolls. -->
+          <div class="viewer-pdf" #pdfBox>
+            <img class="pdf-page" [src]="pages()[page()]" [alt]="state.t('pageOf', { x: page() + 1, y: pages().length })" draggable="false" />
+          </div>
+          @if (pages().length > 1) {
+            <div class="pdf-nav">
+              <button type="button" class="pdf-arrow" (click)="turnPage(-1)" [disabled]="page() === 0" [attr.aria-label]="state.t('pagePrev')">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              </button>
+              <span class="pdf-count" aria-live="polite">{{ state.t('pageOf', { x: page() + 1, y: pages().length }) }}</span>
+              <button type="button" class="pdf-arrow" (click)="turnPage(1)" [disabled]="page() === pages().length - 1" [attr.aria-label]="state.t('pageNext')">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          }
+        }
+        @case ('pdf-error') {
+          <div class="viewer-blocked" role="alert">
+            <i class="fa-solid fa-file-circle-exclamation viewer-icon" aria-hidden="true"></i>
+            <p class="viewer-msg">{{ state.t('viewerPdfError') }}</p>
+          </div>
+        }
+        @case ('frame') {
+          @if (sandboxed()) {
+            <!-- Other sites: without allow-popups their links cannot open new tabs or windows. -->
+            <iframe class="viewer-frame" [src]="frameUrl()" [title]="link.title"
+                    sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+          } @else {
+            <iframe class="viewer-frame" [src]="frameUrl()" [title]="link.title"></iframe>
+          }
+        }
+        @case ('copy') {
+          <div class="viewer-copy">
+            <p class="viewer-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> {{ state.t('viewerCopy') }}</p>
+            <div class="viewer-text" lang="it">
+              @for (block of blocks(); track $index) {
+                @switch (block.kind) {
+                  @case ('h') { <h3>{{ block.text }}</h3> }
+                  @case ('li') { <p class="li">{{ block.text }}</p> }
+                  @default { <p>{{ block.text }}</p> }
+                }
+              }
+            </div>
+            @if (qr()) {
+              <div class="viewer-qr viewer-qr--small">
+                <img [src]="qr()" alt="" />
+                <p>{{ state.t('viewerScan') }}</p>
+              </div>
+            }
+          </div>
+        }
+        @case ('blocked') {
+          <div class="viewer-blocked">
+            <i class="fa-solid fa-mobile-screen-button viewer-icon" aria-hidden="true"></i>
+            <p class="viewer-msg">{{ state.t('viewerBlocked') }}</p>
+            @if (qr()) {
+              <div class="viewer-qr">
+                <img [src]="qr()" alt="" />
+              </div>
+            }
+            <p>{{ state.t('viewerScan') }}</p>
+            <p class="viewer-url" dir="ltr">{{ link.url }}</p>
+          </div>
+        }
+      }
+    </div>
+  </section>
+}

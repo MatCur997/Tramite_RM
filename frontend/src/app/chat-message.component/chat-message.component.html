@@ -1,0 +1,60 @@
+@let msg = message();
+<div class="message-row" [class.user]="msg.sender === 'user'" [class.bot]="msg.sender === 'bot'">
+  @if (msg.sender === 'bot') {
+    <span class="bot-avatar" aria-hidden="true"><img src="logo-tramite-icona.png" alt="" /></span>
+  }
+  <div class="message-bubble" [class.user]="msg.sender === 'user'" [class.bot]="msg.sender === 'bot'" [class.typing]="msg.pending">
+    @if (msg.pending) {
+      <span class="dots" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="sr-only">{{ state.t('typing') }}</span>
+    } @else {
+      <span class="message-text">@for (part of parts(); track $index) {@if (hasText(part)) {<span>{{ part.text }}</span>} @else {@for (n of part.cites; track $index) {<span class="cite"><span class="sr-only">{{ state.t('sourceWord') }} </span>{{ n }}</span>}}}</span>
+    }
+
+    @if (reading()) {
+      <!-- Play / pause (resumes where it stopped) and "Ricomincia", from the beginning. -->
+      <div class="speak-controls">
+        <button type="button" class="speak-btn" [class.on]="speaking()" (click)="togglePlay()" [attr.aria-pressed]="speaking()">
+          <i class="fa-solid" [class.fa-play]="!speaking()" [class.fa-pause]="speaking()" aria-hidden="true"></i>
+          <span>{{ playLabel() }}</span>
+        </button>
+        <button type="button" class="speak-btn speak-restart" (click)="restartReading()"
+                [title]="state.t('restart')" [attr.aria-label]="state.t('restart')">
+          <i class="fa-solid fa-stop" aria-hidden="true"></i>
+          <span>{{ state.t('restartShort') }}</span>
+        </button>
+      </div>
+    }
+
+    @if (msg.forms?.length) {
+      <div class="message-links">
+        <span class="links-label">{{ state.t('formsLabel') }}</span>
+        @for (form of msg.forms; track form.id) {
+          <a class="form-link" [href]="form.url" (click)="openLink($event, { url: form.url, title: form.title, kind: 'modulo' })">
+            <span class="pdf-badge" aria-hidden="true">PDF</span>
+            <span>{{ form.title }}</span>
+          </a>
+        }
+      </div>
+    }
+
+    @if (msg.sources?.length) {
+      <div class="message-links">
+        <span class="links-label">{{ state.t('sourcesLabel') }}</span>
+        @for (source of msg.sources; track source.number) {
+          @if (source.url) {
+            <a class="source-link" [href]="source.url" (click)="openLink($event, { url: source.url, title: source.title, copy: source.copy, kind: source.kind })">
+              <span class="cite">{{ source.number }}</span>
+              <span>{{ source.title }}</span>
+            </a>
+          } @else {
+            <span class="source-link">
+              <span class="cite">{{ source.number }}</span>
+              <span>{{ source.title }}</span>
+            </span>
+          }
+        }
+      </div>
+    }
+  </div>
+</div>
