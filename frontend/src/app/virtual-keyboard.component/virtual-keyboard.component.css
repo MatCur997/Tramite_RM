@@ -195,14 +195,15 @@
   font-size: calc(20px * var(--vk));
 }
 
-/* In the chat: under the conversation, as wide as its column and at full size (keys of 60 px,
-   10 px apart), with the light blue of the bar above it. Shorter keys on shorter screens. */
+/* In the chat: under the conversation, as wide as its column, with keys 85% of the first size
+   (51 px tall, 8.5 px apart) and the light blue of the bar above it. Shorter keys on shorter
+   screens. */
 .vk.vk-docked {
-  --vk: 1;
+  --vk: 0.85;
   position: static;
   width: 100%;
   margin: 0;
-  padding: 14px 18px 18px;
+  padding: 12px 15px 15px;
   border: 2px solid var(--c-panel-line);
   border-top: 1px solid var(--c-panel-line);
   border-bottom: 0;
@@ -219,33 +220,33 @@
 .vk-docked .hg-rows,
 .vk-docked .hg-row,
 .vk-docked .hg-row .hg-button-container {
-  gap: 10px;
+  gap: 8.5px;
 }
 
 .vk-docked .hg-button {
-  height: clamp(44px, 5.6dvh, 60px);
-  border-radius: 12px;
-  font-size: 24px;
+  height: clamp(37px, 4.8dvh, 51px);
+  border-radius: 10px;
+  font-size: 20.4px;
 }
 
 .vk-docked .hg-button.hg-functionBtn {
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .vk-docked .hg-button[data-skbtn="{enter}"] {
   flex-grow: 2;
-  font-size: 22px;
+  font-size: 18.7px;
   font-weight: 800;
 }
 
 .vk-docked .hg-button[data-skbtn="{close}"],
 .vk-docked .hg-button[data-skbtn="{abc}"] {
   flex-grow: 2;
-  gap: 8px;
+  gap: 7px;
 }
 
 .vk-docked .hg-button span {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }

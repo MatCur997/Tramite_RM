@@ -139,10 +139,3 @@
   background: var(--c-primary);
   color: var(--c-on-primary);
 }
-
-.lang-hint {
-  margin: clamp(16px, 4.4dvh, 48px) 0 0;
-  color: var(--c-on-dark-muted);
-  font-size: min(1.5rem, 3.4dvh);
-  line-height: 1.3;
-}

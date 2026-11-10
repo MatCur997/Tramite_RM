@@ -8,14 +8,13 @@
 
   <div class="body">
     @if (!topics.sections().length) {
-      <!-- Before the first answer about a subject: how the kiosk works, and that nothing is kept. -->
+      <!-- Before the first answer about a subject: how the kiosk works. -->
       <h3 class="how-title">{{ state.t('howTitle') }}</h3>
       <ol class="how">
         @for (step of ['howStep1', 'howStep2', 'howStep3']; track step; let n = $index) {
           <li><span class="step" aria-hidden="true">{{ n + 1 }}</span><span>{{ state.t(step) }}</span></li>
         }
       </ol>
-      <p class="privacy"><i class="fa-solid fa-lock" aria-hidden="true"></i><span>{{ state.t('privacyNote') }}</span></p>
     } @else {
       @for (section of topics.sections(); track section.topic) {
         @if (section.topic === topics.open()) {
@@ -77,6 +76,8 @@
         }
       }
     }
+    <!-- Always at the bottom of the panel, right above the print key: nothing is kept. -->
+    <p class="privacy">{{ state.t('privacyNote') }}</p>
   </div>
 
   <footer class="foot">

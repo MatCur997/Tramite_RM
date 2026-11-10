@@ -35,21 +35,25 @@ import { START_TOPICS, topicIcon } from './topics';
       font-size: 1.2rem;
       text-align: center;
     }
+    /* The cards take 85% of the width of the conversation, and what is in them is sized to
+       match, so they do not crowd the screen. */
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
+      width: 85%;
+      margin-inline: auto;
     }
     /* White on the light blue of the conversation, like the answers. */
     .card {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 6px;
-      min-height: 132px;
-      padding: 18px 20px;
+      gap: 5px;
+      min-height: 112px;
+      padding: 15px 17px;
       border: 2px solid var(--c-panel-line);
-      border-radius: 20px;
+      border-radius: 17px;
       background: var(--c-surface);
       color: var(--c-text);
       font: inherit;
@@ -64,16 +68,16 @@ import { START_TOPICS, topicIcon } from './topics';
     .icon {
       display: grid;
       place-items: center;
-      width: 52px;
-      height: 52px;
-      margin-bottom: 4px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 3px;
+      border-radius: 12px;
       background: var(--c-primary);
       color: var(--c-on-primary);
-      font-size: 24px;
+      font-size: 20px;
     }
     .title {
-      font-size: 1.25rem;
+      font-size: 1.06rem;
       font-weight: 800;
       color: var(--c-text-strong);
       hyphens: auto;
@@ -81,7 +85,7 @@ import { START_TOPICS, topicIcon } from './topics';
     }
     .desc {
       color: var(--c-muted);
-      font-size: 1rem;
+      font-size: 0.85rem;
       line-height: 1.35;
     }
     /* A narrow conversation (a document open beside it), or large text: two columns. */

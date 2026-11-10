@@ -9,7 +9,6 @@
           <span class="assistant-avatar" aria-hidden="true"><img src="logo-tramite-icona.png" alt="" /></span>
           <div class="assistant-name">
             <h1 id="chat-title">{{ state.t('assistantTitle') }}</h1>
-            <p>{{ state.t('assistantSub') }}</p>
           </div>
           <!-- One chip per subject of the conversation: a touch goes back to where it started. -->
           <app-topic-chips />
@@ -23,7 +22,6 @@
         </header>
 
         <div class="chat-messages" #messagesBox role="log" aria-live="polite">
-          <p class="privacy-note"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{ state.t('privacyNote') }}</p>
           @if (!hasQuestions()) {
             <app-chat-start (pick)="askAbout($event)" />
           }
